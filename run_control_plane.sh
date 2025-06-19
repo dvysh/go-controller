@@ -20,7 +20,7 @@ sudo kubebuilder/bin/kube-apiserver \
     --secure-port=6443 \
     --advertise-address=$HOST_IP \
     --authorization-mode=AlwaysAllow \
-    --token-auth-file=/home/dvysh/openssl/token.csv \
+    --token-auth-file=/home/codespace/openssl/token.csv \
     --enable-priority-and-fairness=false \
     --allow-privileged=true \
     --profiling=false \
@@ -28,8 +28,8 @@ sudo kubebuilder/bin/kube-apiserver \
     --storage-media-type=application/json \
     --v=0 \
     --service-account-issuer=https://kubernetes.default.svc.cluster.local \
-    --service-account-key-file=/home/dvysh/openssl/sa.pub \
-    --service-account-signing-key-file=/home/dvysh/openssl/sa.key &
+    --service-account-key-file=/home/codespace/openssl/sa.pub \
+    --service-account-signing-key-file=/home/codespace/openssl/sa.key &
 sleep 10
 
  
@@ -72,7 +72,7 @@ sudo PATH=$PATH:/opt/cni/bin:/usr/sbin kubebuilder/bin/kube-controller-manager \
     --service-cluster-ip-range=10.0.0.0/24 \
     --cluster-name=kubernetes \
     --root-ca-file=/var/lib/kubelet/ca.crt \
-    --service-account-private-key-file=/home/dvysh/openssl/sa.key \
+    --service-account-private-key-file=/home/codespace/openssl/sa.key \
     --use-service-account-credentials=true \
     --v=2 &
 sleep 10
