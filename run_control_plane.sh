@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 HOST_IP=$(hostname -I | awk '{print $1}')
 sudo kubebuilder/bin/etcd \
     --advertise-client-urls http://$HOST_IP:2379 \
