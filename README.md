@@ -43,13 +43,13 @@ go build -o controller
 
 ## Examples
 
-✔️ Get all secrets from default namespace:
+✔️ Get all secrets from default namespace:  
 ./controller get-secrets --namespace=default
 
-✔️ Get secrets with label selector:
+✔️ Get secrets with label selector:  
 ./controller get-secrets --namespace=default --label=secrets-store.csi.k8s.io/managed=true
 
-✔️ Get and copy secrets to another namespace:
+✔️ Get and copy secrets to another namespace:  
 ./controller get-secrets --namespace=default --label=secrets-store.csi.k8s.io/managed=true --target-namespace=prod
 
 
