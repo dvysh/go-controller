@@ -5,15 +5,17 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/spf13/cobra"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
-	"os"
 )
 
 var secretsList string
-var namespace string = "nginx-ingress"
+var srcNamespace string = "nginx-ingress"
 var labelSelector string = "secrets-store.csi.k8s.io/managed=true"
+var targetNamespace string = "default"
 
 var clientset *kubernetes.Clientset
 
