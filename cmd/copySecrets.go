@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"context"
-	"fmt"
+	"strconv"
 
 	"github.com/spf13/cobra"
 	corev1 "k8s.io/api/core/v1"
@@ -21,11 +21,11 @@ func copySecrets() {
 	secrets, err := getSecrets()
 
 	if err != nil {
-		fmt.Printf("Error: %v\n", err)
+		loggerStderr.Error().Err(err).Msg("Error retrieving secrets")
 		return
 	}
-
-	fmt.Printf("Copying %d secrets to destination namespace:\n", len(secrets))
+	secretsCount := strconv.Itoa(len(secrets))
+	loggerStdout.Info().Str("Count", secretsCount).Msg(("Copying secrets to destination namespace:"))
 	for _, secret := range secrets {
 		// Prepare new Secret object
 		newSecret := &corev1.Secret{
@@ -42,9 +42,9 @@ func copySecrets() {
 		_, err := clientset.CoreV1().Secrets(targetNamespace).Create(context.TODO(), newSecret, metav1.CreateOptions{})
 		if err != nil {
 			// If already exists - skip and warn
-			fmt.Printf("Secret '%s' already exists in target namespace '%s' or error occurred: %v\n", secret.Name, targetNamespace, err)
+			loggerStdout.Warn().Err(err).Str("namespace", targetNamespace).Msg("Warning:")
 		} else {
-			fmt.Printf("Secret '%s' copied to namespace '%s'\n", secret.Name, targetNamespace)
+			loggerStdout.Info().Str("namespace", targetNamespace).Str("secret.Name", secret.Name).Msg("Secret copied to:")
 		}
 	}
 }

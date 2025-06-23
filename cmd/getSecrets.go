@@ -5,8 +5,6 @@ package cmd
 
 import (
 	"context"
-	"fmt"
-	"log"
 
 	"github.com/spf13/cobra"
 	corev1 "k8s.io/api/core/v1"
@@ -27,22 +25,22 @@ func getSecrets() ([]corev1.Secret, error) {
 		LabelSelector: labelSelector,
 	})
 	if err != nil {
-		log.Fatalf("Error retrieving secrets: %v", err)
+		loggerStderr.Error().Err(err).Msg("Error retrieving secrets")
+
 	}
 
 	if len(secretsList.Items) == 0 {
-		fmt.Printf("No secrets found in namespace '%s' with label '%s'.\n", srcNamespace, labelSelector)
+		loggerStdout.Info().Str("namespace", targetNamespace).Msg("No secrets found in")
 		return secretsList.Items, nil
 	}
 
-	fmt.Printf("List of secrets in namespace '%s'", srcNamespace)
+	loggerStdout.Info().Str("namespace", srcNamespace).Msg("List of secrets in")
 	if labelSelector != "" {
-		fmt.Printf(" with label '%s'", labelSelector)
+		loggerStdout.Info().Str("label selector", labelSelector).Msg("With")
 	}
-	fmt.Println(":")
 
 	for _, secret := range secretsList.Items {
-		fmt.Println("- ", secret.Name)
+		loggerStdout.Info().Str("secret.Name", secret.Name).Msg("    ")
 	}
 	return secretsList.Items, nil
 }
